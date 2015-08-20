@@ -1,0 +1,10 @@
+[package]
+name = "pcmanx-rust"
+version = "0.1.0"
+authors = ["Kan-Ru Chen <kanru@kanru.info>"]
+
+[dependencies.gtk]
+git = "https://github.com/rust-gnome/gtk.git"
+
+[dependencies.gdk]
+git = "https://github.com/rust-gnome/gdk.git"
