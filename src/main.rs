@@ -1,5 +1,8 @@
 extern crate gtk;
 
+mod core;
+mod view;
+
 use gtk::traits::*;
 use gtk::signal::Inhibit;
 
