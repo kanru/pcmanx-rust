@@ -8,3 +8,6 @@ git = "https://github.com/rust-gnome/gtk.git"
 
 [dependencies.gdk]
 git = "https://github.com/rust-gnome/gdk.git"
+
+[dependencies.cairo-rs]
+git = "https://github.com/rust-gnome/cairo.git"

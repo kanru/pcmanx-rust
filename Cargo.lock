@@ -2,6 +2,7 @@
 name = "pcmanx-rust"
 version = "0.1.0"
 dependencies = [
+ "cairo-rs 0.0.4 (git+https://github.com/rust-gnome/cairo)",
  "gdk 0.1.1 (git+https://github.com/rust-gnome/gdk)",
  "gtk 0.0.3 (git+https://github.com/rust-gnome/gtk.git)",
 ]

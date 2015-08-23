@@ -1,4 +1,6 @@
 extern crate gtk;
+extern crate gdk;
+extern crate cairo;
 
 mod core;
 mod view;
@@ -22,7 +24,8 @@ fn main() {
     });
 
     let button = gtk::Button::new_with_label("Click me!").unwrap();
-    window.add(&button);
+    let term = self::view::TermView::new();
+    window.add(term.as_widget());
     button.connect_clicked(|_| {
         gtk::main_quit();
     });
