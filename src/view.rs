@@ -20,21 +20,29 @@ impl TermView {
             widget: gtk::DrawingArea::new().unwrap(),
             state: Cell::new(TermViewState),
         });
-        let this = instance.clone();
-        instance.widget.connect_configure_event(move |_, evt| {
-            this.on_configure_event(evt)
+        instance.widget.connect_configure_event({
+            let this = instance.clone();
+            move |_, evt| {
+                this.on_configure_event(evt)
+            }
         });
-        let this = instance.clone();
-        instance.widget.connect_draw(move |_, context| {
-            this.on_draw(context)
+        instance.widget.connect_draw({
+            let this = instance.clone();
+            move |_, context| {
+                this.on_draw(context)
+            }
         });
-        let this = instance.clone();
-        instance.widget.connect_focus_in_event(move |_, evt| {
-            this.on_focus_in(evt)
+        instance.widget.connect_focus_in_event({
+            let this = instance.clone();
+            move |_, evt| {
+                this.on_focus_in(evt)
+            }
         });
-        let this = instance.clone();
-        instance.widget.connect_focus_out_event(move |_, evt| {
-            this.on_focus_out(evt)
+        instance.widget.connect_focus_out_event({
+            let this = instance.clone();
+            move |_, evt| {
+                this.on_focus_out(evt)
+            }
         });
         instance.widget.set_can_focus(true);
 
