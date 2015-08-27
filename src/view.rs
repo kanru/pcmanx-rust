@@ -20,6 +20,18 @@ impl TermView {
             widget: gtk::DrawingArea::new().unwrap(),
             state: Cell::new(TermViewState),
         });
+        instance.widget.connect_destroy({
+            let this = instance.clone();
+            move |_| {
+                this.on_destroy()
+            }
+        });
+        instance.widget.connect_realize({
+            let this = instance.clone();
+            move |_| {
+                this.on_realize()
+            }
+        });
         instance.widget.connect_configure_event({
             let this = instance.clone();
             move |_, evt| {
@@ -50,6 +62,16 @@ impl TermView {
     }
     pub fn as_widget(&self) -> &gtk::DrawingArea {
         &self.widget
+    }
+    pub fn refresh(&self) {
+        if !self.widget.get_realized() {
+            return;
+        }
+        self.widget.queue_draw();
+    }
+    fn on_destroy(&self) {
+    }
+    fn on_realize(&self) {
     }
     fn on_configure_event(&self, evt: &gdk::EventConfigure) -> Inhibit {
         Inhibit(true)
