@@ -5,6 +5,7 @@ use gtk::signal::Inhibit;
 use gtk::traits::*;
 use gtk;
 use std::cell::{Cell,RefCell};
+use std::cmp;
 use std::rc::Rc;
 
 pub struct TermView {
@@ -111,20 +112,13 @@ impl TermView {
                 let (mut left, mut top) = self.point_to_line_col(x, y);
                 let (mut right, mut bottom) = self.point_to_line_col(width, height);
 
-                // FIXME
                 if right < term_data.cols_per_page {
                     right += 1;
                 }
                 if bottom < term_data.rows_per_page {
                     bottom += 1;
                 }
-                if top > 0 {
-                    if top > 1 {
-                        top -= 2;
-                    } else {
-                        top -= 1;
-                    }
-                }
+                top = cmp::max(0, top - 2);
 
                 for row in top..bottom {
                     for col in left..right {
@@ -132,17 +126,18 @@ impl TermView {
                     }
                 }
 
-                let w = self.widget.get_allocated_width();
-                let h = self.widget.get_allocated_height();
-                let left_margin = self.state.get().left_margin;
-                let top_margin = self.state.get().top_margin;
-                let left = term_data.cols_per_page * self.state.get().char_w - 2;
-                let top = term_data.rows_per_page * self.state.get().char_h;
+                let w = self.widget.get_allocated_width() as f64;
+                let h = self.widget.get_allocated_height() as f64;
+                let state = self.state.get();
+                let left_margin = state.left_margin as f64;
+                let top_margin = state.top_margin as f64;
+                let left = (term_data.cols_per_page * state.char_w - 2) as f64;
+                let top = (term_data.rows_per_page * state.char_h) as f64;
                 cr.set_source_rgb(0.0, 0.0, 0.0);
-                cr.rectangle(0.0, 0.0, left_margin as f64, h as f64);
-                cr.rectangle((left + left_margin) as f64, 0.0, (w - left) as f64, h as f64);
-                cr.rectangle(0.0, 0.0, w as f64, top_margin as f64);
-                cr.rectangle(0.0, (top + top_margin) as f64, w as f64, (h - top) as f64);
+                cr.rectangle(0.0, 0.0, left_margin, h);
+                cr.rectangle(left + left_margin, 0.0, w - left, h);
+                cr.rectangle(0.0, 0.0, w, top_margin);
+                cr.rectangle(0.0, top + top_margin, w, h - top);
                 cr.fill();
             },
             None => {
